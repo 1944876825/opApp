@@ -1,7 +1,8 @@
 var cfg = Config();
 
 class Config {
-  String apiKey = "JmblIQqUsTHuSgiTlerUaNVTKKykN3fJ";
+  String apiKey = "xxxx"; // 测试用
+  String apiUrl = "http://xxxx/api/v1"; // 测试用
   // late UserInfo _userInfo;
   // UserInfo get userInfo => _userInfo;
 

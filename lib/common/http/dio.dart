@@ -77,7 +77,7 @@ extension DioExtension on Dio {
 }
 
 Dio myDio = Dio(BaseOptions(
-  baseUrl: 'http://162.14.96.87:8090/api/v1',
+  baseUrl: cfg.apiUrl,
 ));
 
 typedef Json = Map<String, dynamic>;

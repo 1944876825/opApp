@@ -42,7 +42,7 @@ extension DioExtension on Dio {
       default:
         throw ArgumentError("Unsupported HTTP method: $m");
     }
-    // print("--------------${resp.data}");
+    // print("myFetch-------------$path-${resp.data}");
     // print(jsonEncode(resp.data));
     if (resp.statusCode != 200) {
       throw Exception("HTTP request failed with status ${resp.statusCode}");

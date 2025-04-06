@@ -43,36 +43,43 @@ class _AppPageState extends State<AppPage> {
         // centerTitle: true,
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {},
+        child: Icon(Icons.add),
+      ),
       body: FutureBuilder(
-          future: _init,
-          builder: (context, snap) {
-            if (snap.connectionState == ConnectionState.waiting) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (snap.hasError) {
-              return Center(
-                child: Text(snap.error.toString()),
-              );
-            }
-            return ListView.builder(
-              itemCount: _appList.length,
-              itemBuilder: (context, index) {
-                var app = _appList[index];
-                return Card(
+        future: _init,
+        builder: (context, snap) {
+          if (snap.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (snap.hasError) {
+            return Center(
+              child: Text(snap.error.toString()),
+            );
+          }
+          return ListView.builder(
+            itemCount: _appList.length,
+            itemBuilder: (context, index) {
+              var app = _appList[index];
+              return Card(
+                child: InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(12),
                   child: ListTile(
                     leading: ClipRRect(
                       borderRadius: BorderRadius.circular(60),
                       child: Image.memory(
                         base64Decode(app.icon),
-                        width: 48,
-                        height: 48,
+                        width: 36,
+                        height: 36,
                         fit: BoxFit.fill,
                       ),
                     ),
                     title: Text(
-                      app.appName,
+                      app.name,
                       style: TextStyle(
                         fontSize: 14,
                       ),
@@ -93,10 +100,12 @@ class _AppPageState extends State<AppPage> {
                       ],
                     ),
                   ),
-                );
-              },
-            );
-          }),
+                ),
+              );
+            },
+          );
+        },
+      ),
     );
   }
 
@@ -106,6 +115,7 @@ class _AppPageState extends State<AppPage> {
     // 根据 status 选择颜色
     if (status == "Running") {
       circleColor = Colors.green;
+      // circleColor = Theme.of(context).colorScheme.primary;
     } else if (status == "Stopped") {
       circleColor = Colors.grey;
     } else {

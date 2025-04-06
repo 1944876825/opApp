@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:op_app/pages/app/app.dart';
+import 'package:op_app/pages/container/container.dart';
+import 'package:op_app/pages/dashboard/dashboard.dart';
+import 'package:op_app/pages/web/web.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,54 +21,62 @@ class MyApp extends StatelessWidget {
       ),
       darkTheme: ThemeData.dark(useMaterial3: true),
       debugShowCheckedModeBanner: false,
-      themeMode: ThemeMode.dark,
-      home: const AppPage(),
+      themeMode: ThemeMode.light,
+      home: const BasePage(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  final String title;
+class BasePage extends StatefulWidget {
+  const BasePage({super.key});
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<BasePage> createState() => _BasePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() async {
-    // var res = await ApiApp.getList();
-    // print(res.data);
-  }
+class _BasePageState extends State<BasePage> {
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+      body: IndexedStack(
+        index: _currentIndex,
+        children: [
+          DashBoardPage(),
+          AppPage(),
+          WebPage(),
+          ContainerPage(),
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (value) {
+          setState(() {
+            _currentIndex = value;
+          });
+        },
+        type: BottomNavigationBarType.fixed,
+        // unselectedIconTheme: IconThemeData(
+        //   color: Colors.grey,
+        // ),
+        unselectedLabelStyle: TextStyle(
+          fontSize: 12,
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+        // selectedIconTheme: IconThemeData(
+        //   color: Theme.of(context).colorScheme.primary,
+        // ),
+        selectedLabelStyle: TextStyle(
+          // color: Theme.of(context).colorScheme.primary,
+          fontSize: 12,
+        ),
+        items: [
+          BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: "仪表盘"),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.app_registration), label: "应用"),
+          BottomNavigationBarItem(icon: Icon(Icons.web), label: "网站"),
+          BottomNavigationBarItem(icon: Icon(Icons.menu), label: "容器"),
+        ],
       ),
     );
   }

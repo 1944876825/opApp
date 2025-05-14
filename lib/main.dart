@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:op_app/pages/app/app.dart';
+import 'package:op_app/pages/app/apps_installed.dart';
 import 'package:op_app/pages/container/container.dart';
 import 'package:op_app/pages/dashboard/dashboard.dart';
 import 'package:op_app/pages/web/web.dart';

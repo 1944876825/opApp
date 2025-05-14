@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:op_app/common/api/app.dart';
 import 'package:op_app/common/model/app.dart';
 
+import 'apps.dart';
+
 class AppPage extends StatefulWidget {
   const AppPage({super.key});
 
@@ -39,12 +41,12 @@ class _AppPageState extends State<AppPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("应用商店"),
+        title: Text("我的应用"),
         // centerTitle: true,
         actions: [IconButton(onPressed: () {}, icon: Icon(Icons.search))],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: _toAddApps,
         child: Icon(Icons.add),
       ),
       body: FutureBuilder(
@@ -107,6 +109,11 @@ class _AppPageState extends State<AppPage> {
         },
       ),
     );
+  }
+
+  _toAddApps() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => AppsPage()));
   }
 
   _buildStatus(String status) {

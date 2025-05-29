@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import '../config/config.dart';
-import 'package:crypto/crypto.dart';
+import 'package:crypto/crypto.dart' show md5;
 
 extension DioExtension on Dio {
   FutureBaseRes<T> myFetch<T>(

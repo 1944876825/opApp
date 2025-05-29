@@ -554,3 +554,31 @@ class Value {
         "value": value,
       };
 }
+
+class ServiceItem {
+  String label;
+  String value;
+  Map<String, dynamic> config;
+  String from;
+
+  ServiceItem({
+    required this.label,
+    required this.value,
+    required this.config,
+    required this.from,
+  });
+
+  factory ServiceItem.fromJson(Map<String, dynamic> json) => ServiceItem(
+        label: json["label"],
+        value: json["value"],
+        config: json["config"] ?? {},
+        from: json["from"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "label": label,
+        "value": value,
+        "config": config,
+        "from": from,
+      };
+}

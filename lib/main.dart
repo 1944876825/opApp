@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:op_app/pages/app/apps_installed.dart';
 import 'package:op_app/pages/container/container.dart';
 import 'package:op_app/pages/dashboard/dashboard.dart';
+import 'package:op_app/pages/host/host_list.dart';
 import 'package:op_app/pages/web/web.dart';
+import 'package:op_app/pages/ssh/ssh_terminal.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -42,11 +45,10 @@ class _BasePageState extends State<BasePage> {
     return Scaffold(
       body: IndexedStack(
         index: _currentIndex,
-        children: [
+        children: const [
           DashBoardPage(),
           AppPage(),
           WebPage(),
-          ContainerPage(),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -57,25 +59,17 @@ class _BasePageState extends State<BasePage> {
           });
         },
         type: BottomNavigationBarType.fixed,
-        // unselectedIconTheme: IconThemeData(
-        //   color: Colors.grey,
-        // ),
-        unselectedLabelStyle: TextStyle(
+        unselectedLabelStyle: const TextStyle(
           fontSize: 12,
         ),
-        // selectedIconTheme: IconThemeData(
-        //   color: Theme.of(context).colorScheme.primary,
-        // ),
-        selectedLabelStyle: TextStyle(
-          // color: Theme.of(context).colorScheme.primary,
+        selectedLabelStyle: const TextStyle(
           fontSize: 12,
         ),
-        items: [
+        items: const [
           BottomNavigationBarItem(icon: Icon(Icons.dashboard), label: "仪表盘"),
           BottomNavigationBarItem(
               icon: Icon(Icons.app_registration), label: "应用"),
           BottomNavigationBarItem(icon: Icon(Icons.web), label: "网站"),
-          BottomNavigationBarItem(icon: Icon(Icons.menu), label: "容器"),
         ],
       ),
     );

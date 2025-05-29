@@ -1,5 +1,7 @@
 import 'package:op_app/common/http/dio.dart';
 import 'package:op_app/common/model/app.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:op_app/common/config/config.dart';
 
 class ApiApp {
   // static FutureBaseRes<List<AppItem>> installedList() async {
@@ -17,6 +19,7 @@ class ApiApp {
   // 应用商城搜索
   static FutureBaseRes<List<AppsItem>> appsSearch(Json data) async {
     return await myDio.myFetch("/apps/search", (data) {
+      print("mydebug appsSearch $data");
       return data["items"].map<AppsItem>((e) => AppsItem.fromJson(e)).toList();
     }, data: data);
   }
@@ -32,15 +35,112 @@ class ApiApp {
 
   // 应用详情
   static FutureBaseRes<AppInfo> appInfo(String name) async {
+    print("mydebug /apps/$name");
     return await myDio.myFetch("/apps/$name", (data) {
+      print("mydebug data $data");
       return AppInfo.fromJson(data);
-    });
+    }, method: "get");
   }
 
   static FutureBaseRes<AppDeatil> appDeatil(String appId, version) async {
+    print("mydebug /apps/detail/$appId/$version/app");
     return await myDio.myFetch("/apps/detail/$appId/$version/app", (data) {
+      print("mydebug data $data");
       return AppDeatil.fromJson(data);
+    }, method: "get");
+  }
+
+  static FutureBaseRes<void> start(String id) async {
+    return await myDio.myFetch(
+      '/apps/start',
+      (data) => null,
+      data: {'id': id},
+      method: 'POST',
+    );
+  }
+
+  static FutureBaseRes<void> stop(String id) async {
+    return await myDio.myFetch(
+      '/apps/stop',
+      (data) => null,
+      data: {'id': id},
+      method: 'POST',
+    );
+  }
+
+  static FutureBaseRes<void> update(String id) async {
+    return await myDio.myFetch(
+      '/apps/update',
+      (data) => null,
+      data: {'id': id},
+      method: 'POST',
+    );
+  }
+
+  static FutureBaseRes<void> uninstall(String id) async {
+    return await myDio.myFetch(
+      '/apps/installed/op',
+      (data) => null,
+      data: {
+        'operate': 'delete',
+        'installId': int.parse(id),
+        'deleteBackup': true,
+        'forceDelete': true,
+        'deleteDB': true
+      },
+      method: 'POST',
+    );
+  }
+
+  static FutureBaseRes<void> install(Map<String, dynamic> data) {
+    return myDio.myFetch<void>(
+      '/apps/install',
+      (data) => null,
+      data: data,
+      method: 'POST',
+    );
+  }
+
+  static FutureBaseRes<String> installLog(String name) async {
+    return await myDio.myFetch("/apps/install/log/$name", (data) {
+      return data.toString();
     });
+  }
+
+  static Stream<String> getRealtimeLog(String composePath) {
+    final wsUrl = 'ws://162.14.96.87:8090/api/v1/containers/compose/search/log';
+    final unixTimestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000).toString();
+    final token = generateToken(cfg.apiKey, unixTimestamp);
+    
+    final params = {
+      'compose': composePath,
+      'since': (DateTime.now().millisecondsSinceEpoch / 1000).toString(),
+      'tail': '200',
+      'follow': 'true',
+      'token': token,
+      'timestamp': unixTimestamp
+    };
+    
+    final uri = Uri.parse(wsUrl).replace(queryParameters: params);
+    final channel = WebSocketChannel.connect(uri);
+    
+    return channel.stream.map((data) {
+      if (data is String) {
+        return data;
+      } else if (data is List<int>) {
+        return String.fromCharCodes(data);
+      } else {
+        return data.toString();
+      }
+    });
+  }
+
+  static FutureBaseRes<List<ServiceItem>> services(String key) async {
+    print("mydebug /apps/services/$key");
+    return await myDio.myFetch("/apps/services/$key", (data) {
+      print("mydebug services data $data");
+      return data.map<ServiceItem>((e) => ServiceItem.fromJson(e)).toList();
+    }, method: "get");
   }
 }
 

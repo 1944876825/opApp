@@ -404,3 +404,61 @@ class DiskDatum {
         "inodesUsedPercent": inodesUsedPercent,
       };
 }
+
+class DashboardCurrent {
+  final double cpuUsage;
+  final double memoryUsage;
+  final double diskUsage;
+  final int runningContainers;
+  final int runningWebsites;
+  final int runningDatabases;
+  final List<SystemResource> resources;
+
+  DashboardCurrent({
+    required this.cpuUsage,
+    required this.memoryUsage,
+    required this.diskUsage,
+    required this.runningContainers,
+    required this.runningWebsites,
+    required this.runningDatabases,
+    required this.resources,
+  });
+
+  factory DashboardCurrent.fromJson(Map<String, dynamic> json) {
+    return DashboardCurrent(
+      cpuUsage: json['cpuUsage']?.toDouble() ?? 0.0,
+      memoryUsage: json['memoryUsage']?.toDouble() ?? 0.0,
+      diskUsage: json['diskUsage']?.toDouble() ?? 0.0,
+      runningContainers: json['runningContainers'] ?? 0,
+      runningWebsites: json['runningWebsites'] ?? 0,
+      runningDatabases: json['runningDatabases'] ?? 0,
+      resources: (json['resources'] as List<dynamic>?)
+              ?.map((e) => SystemResource.fromJson(e))
+              .toList() ??
+          [],
+    );
+  }
+}
+
+class SystemResource {
+  final String name;
+  final double usage;
+  final String unit;
+  final double total;
+
+  SystemResource({
+    required this.name,
+    required this.usage,
+    required this.unit,
+    required this.total,
+  });
+
+  factory SystemResource.fromJson(Map<String, dynamic> json) {
+    return SystemResource(
+      name: json['name'] ?? '',
+      usage: json['usage']?.toDouble() ?? 0.0,
+      unit: json['unit'] ?? '',
+      total: json['total']?.toDouble() ?? 0.0,
+    );
+  }
+}

@@ -14,10 +14,10 @@ class SSHTerminalPage extends StatefulWidget {
 }
 
 class _SSHTerminalPageState extends State<SSHTerminalPage> {
-  final _hostController = TextEditingController(text: '162.14.96.87');
+  final _hostController = TextEditingController(text: '127.0.0.2');
   final _portController = TextEditingController(text: '22');
-  final _usernameController = TextEditingController(text: 'ubuntu');
-  final _passwordController = TextEditingController(text: '.bs1229.');
+  final _usernameController = TextEditingController(text: 'root');
+  final _passwordController = TextEditingController(text: '123456');
   final _terminal = Terminal();
   SSHClient? _client;
   SSHSession? _session;
